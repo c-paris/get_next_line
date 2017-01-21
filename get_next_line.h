@@ -12,8 +12,13 @@
 
 #ifndef GET_NEXT_LINE
 # define GET_NEXT_LINE
+#include <unistd.h>
+#include <stdlib.h>
 
-void	get_next_line();
-void	ft_realloc();
+#define BUFF_SIZE 32;
+
+char	*get_next_line(int const fd);
+char 	get_next_char(int const fd);
+char  *realloc_master(char *ptr, unsigned long size);
 
 #endif
