@@ -6,7 +6,7 @@
 /*   By: cparis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 11:29:15 by cparis            #+#    #+#             */
-/*   Updated: 2016/12/07 11:45:10 by cparis           ###   ########.fr       */
+/*   Updated: 2017/01/25 14:29:04 by cparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define GET_NEXT_LINE
 #include <unistd.h>
 #include <stdlib.h>
+#include "libft/libft.h"
 
-#define BUFF_SIZE 32;
+#define BUFF_SIZE 32
 
-char	*get_next_line(int const fd);
-char 	get_next_char(int const fd);
-char  *realloc_master(char *ptr, unsigned long size);
+#define MALLCHECK(x) if (!x) return (-1);
+
+int		get_next_line(int const fd, char **line);
 
 #endif

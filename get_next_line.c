@@ -1,61 +1,58 @@
-char  *get_next_line (const int fd)
-{
-  char i;
-  char *str;
-  int len;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cparis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/01/25 15:25:38 by cparis            #+#    #+#             */
+/*   Updated: 2017/01/25 15:25:40 by cparis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-  len = 0;
-  str = malloc(BUFF_SIZE + 1);
-  if (str == 0)
-    return (0);
-  i = get_next_char (fd);
-  while (i != '\n' && i != '\0')
-  {
-    str[len] = i;
-    i = get_next_char(fd);
-    len++;
-    if (len % (BUFF_SIZE + 1) == 0)
-      str = realloc_master(str, len + BUFF_SIZE + 1);
-  }
-  str[len] = 0;
-  if -i == 0 && str[0] == 0)
-    return (0);
-  return (str);
+#include "get_next_line.h"
+
+static t_list	*get_correct_file(t_list **file, int fd)
+{
+	t_list	*tmp;
+
+	tmp = *file;
+	while (tmp)
+	{
+		if ((int)tmp->content_size == fd)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	tmp = ft_lstnew("\0", fd);
+	ft_lstadd(file, tmp);
+	tmp = *file;
+	return (tmp);
 }
 
-char   get_next_char(const int fd)
+int		get_next_line(const int fd, char **line)
 {
-  static char buff[BUFF_SIZE];
-  static int  len;
-  static char *ptr;
-  char        i;
+	char			buf[BUFF_SIZE + 1];
+	static t_list	*file;
+	int				i;
+	int				ret;
+	t_list			*curr;
 
-  if (len == 0)
-  {
-    len = read(fd, buff, BUFF_SIZE);
-    ptr = (char *) buff;
-    if (len == 0)
-      return (0);
-  }
-  i = *ptr;
-  ptr++;
-  len--;
-  return (i);
-}
-
-char   *realloc_master(char *ptr, unsigned long size)
-{
-  char    *tmp;
-  int     i;
-
-  tmp = ptr;
-  ptr = malloc(size);
-  i = 0;
-  while (tmp[i])
-  {
-    ptr[i] = tmp[i];
-    i++;
-  }
-  free(tmp);
-  return (ptr);
+	if ((fd < 0 || line == NULL || read(fd, buf, 0) < 0))
+		return (-1);
+	curr = get_correct_file(&file, fd);
+	MALLCHECK((*line = ft_strnew(1)));
+	while ((ret = read(fd, buf, BUFF_SIZE)))
+	{
+		buf[ret] = '\0';
+		MALLCHECK((curr->content = ft_strjoin(curr->content, buf)));
+		if (ft_strchr(buf, '\n'))
+			break ;
+	}
+	if (ret < BUFF_SIZE && !ft_strlen(curr->content))
+		return (0);
+	i = ft_lstcopy(line, curr->content, '\n');
+	(i < (int)ft_strlen(curr->content))
+		? curr->content += (i + 1)
+		: ft_strclr(curr->content);
+	return (1);
 }
