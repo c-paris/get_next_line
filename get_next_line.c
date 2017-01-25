@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cparis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/25 15:25:38 by cparis            #+#    #+#             */
-/*   Updated: 2017/01/25 15:25:40 by cparis           ###   ########.fr       */
+/*   Created: 2017/01/25 15:37:50 by cparis            #+#    #+#             */
+/*   Updated: 2017/01/25 15:52:39 by cparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_list	*get_correct_file(t_list **file, int fd)
 	return (tmp);
 }
 
-int		get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	char			buf[BUFF_SIZE + 1];
 	static t_list	*file;
@@ -37,7 +37,7 @@ int		get_next_line(const int fd, char **line)
 	int				ret;
 	t_list			*curr;
 
-	if ((fd < 0 || line == NULL || read(fd, buf, 0) < 0))
+	if ((fd < 0 || line == 0 || read(fd, buf, 0) < 0))
 		return (-1);
 	curr = get_correct_file(&file, fd);
 	MALLCHECK((*line = ft_strnew(1)));
