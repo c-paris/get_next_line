@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next.c                                         :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cparis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cparis <cparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 15:37:50 by cparis            #+#    #+#             */
-/*   Updated: 2017/01/25 15:52:39 by cparis           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:30:04 by cparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int				get_next_line(const int fd, char **line)
 	if ((fd < 0 || line == 0 || read(fd, buf, 0) < 0))
 		return (-1);
 	curr = get_correct_file(&file, fd);
-	MALLCHECK((*line = ft_strnew(1)));
+	MALLOC_CHECK((*line = ft_strnew(1)));
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[ret] = '\0';
-		MALLCHECK((curr->content = ft_strjoin(curr->content, buf)));
+		MALLOC_CHECK((curr->content = ft_strjoin(curr->content, buf)));
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
